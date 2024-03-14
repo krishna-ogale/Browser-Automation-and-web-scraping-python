@@ -1,9 +1,6 @@
 from selenium import webdriver
 import time
-
-# set option to make browser easier
-# driver = webdriver.ChromeOptions()
-# getting text values
+from datetime import datetime as dt
 
 def get_driver():
     options = webdriver.ChromeOptions()
@@ -23,10 +20,17 @@ def clean_text(text):
     output = float(text.split(": ")[1])
     return output
 
+def write_file(text):
+  """Write input text into a text file"""
+  filename = f"temp_{dt.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
+  with open(filename, 'w') as file:
+    file.write(text)
+
 def main():
     driver = get_driver()
+    time.sleep(2)
     element = driver.find_element(by="xpath", value="/html/body/div[1]/div/h1[2]")
-    time.sleep(4)
-    return clean_text(element.text)
+    text = clean_text(element.text)
+    write_file(str(text))
 
 print(main())
